@@ -8,6 +8,7 @@ pages:
     - mkdir .dist
     - cp index.html .dist
     - for plugin in */; do cd "$plugin"; sperm build -o "../.dist/$plugin"; cd ..; done
+    - node repoGen.js
     - mv .dist public
   artifacts:
     paths:
