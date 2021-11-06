@@ -1,9 +1,14 @@
+image: node:16-alpine3.14
+
 pages:
   stage: deploy
+  before_script:
+    - yarn global add sperm
   script:
-    - mkdir .public
-    - cp -r dist/* .public
-    - mv .public public
+    - mkdir .dist
+    - cp index.html .dist
+    - for plugin in */; do cd "$plugin"; sperm build -o "../.dist/$plugin"; cd ..; done
+    - mv .dist public
   artifacts:
     paths:
       - public
