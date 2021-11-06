@@ -1,0 +1,7 @@
+{
+  "name": "Platform Icons",
+  "description": "Shows icons for users platform states",
+  "author": "Cynosphere",
+  "file": "plugin.js",
+  "license": "MIT"
+}
