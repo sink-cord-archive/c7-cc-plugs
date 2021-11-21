@@ -6,7 +6,7 @@ Shows icons for users platform states
 
 <a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/PlatformIcons/">![Get on Condom](/.assets/condom.png)</a>
 <details>
-  <summary>Install from source</sumamry>
+  <summary>Install from source</summary>
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/PlatformIcons/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
@@ -16,7 +16,7 @@ Shows typing indicators on channels
 
 <a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/ChannelTypingIndicator/">![Get on Condom](/.assets/condom.png)</a>
 <details>
-  <summary>Install from source</sumamry>
+  <summary>Install from source</summary>
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/ChannelTypingIndicator/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
@@ -26,7 +26,7 @@ Add a button to the new attachment area to quickly toggle spoilering of a file
 
 <a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/QuickSpoiler/">![Get on Condom](/.assets/condom.png)</a>
 <details>
-  <summary>Install from source</sumamry>
+  <summary>Install from source</summary>
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/QuickSpoiler/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
