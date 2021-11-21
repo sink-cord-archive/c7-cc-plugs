@@ -56,14 +56,20 @@ function TypingIndicator({channel, muted}) {
 
   return !isTyping || muted
     ? null
-    : React.createElement(AnimatedSVG, {
-        className: TypingClasses.ellipsis,
-        dotRadius: 3.5,
-        themed: true,
-        style: {
-          marginLeft: "2px",
+    : React.createElement(
+        "div",
+        {
+          style: {
+            marginLeft: "6px",
+            paddingBottom: "3px",
+          },
         },
-      });
+        React.createElement(AnimatedSVG, {
+          className: TypingClasses.ellipsis,
+          dotRadius: 3.5,
+          themed: true,
+        })
+      );
 }
 
 let unpatch;
