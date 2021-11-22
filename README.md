@@ -30,3 +30,8 @@ Add a button to the new attachment area to quickly toggle spoilering of a file
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/QuickSpoiler/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
+
+## Message Link Preview
+Preview message links
+
+<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLinkPreview/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
