@@ -34,4 +34,9 @@ Add a button to the new attachment area to quickly toggle spoilering of a file
 ## Message Link Preview
 Preview message links
 
-<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLinkPreview/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+<a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/MessageLinkPreview/">![Get on Condom](/.assets/condom.png)</a>
+<details>
+  <summary>Install from source</summary>
+
+  <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLinkPreview/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+</details>
