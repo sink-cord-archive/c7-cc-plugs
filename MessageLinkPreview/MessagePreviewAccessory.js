@@ -86,7 +86,12 @@ export default function MessagePreviewAccessory(props) {
         fetchedAttempted.add(parsedChannelPath.messageId);
       }
 
-      if (!referencedMessage) continue;
+      if (
+        !referencedMessage ||
+        !referencedChannel ||
+        (!referencedGuild && parsedChannelPath.guildId != "@me")
+      )
+        continue;
 
       const recursion = referencedMessage.content.match(MESSAGE_LINK_REGEX);
       if (recursion) {
