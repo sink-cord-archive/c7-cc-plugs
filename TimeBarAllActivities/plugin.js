@@ -5,12 +5,13 @@ import {React} from "@cumcord/modules/common";
 const UserActivity = findByDisplayName("UserActivity");
 const ActivityTimeBar = findByDisplayName("ActivityTimeBar");
 
-let unpatch;
+let unpatchTimeBar;
+let unpatchTimePlayed;
 
 export default (data) => {
   return {
     onLoad() {
-      unpatch = instead(
+      unpatchTimeBar = instead(
         "renderTimeBar",
         UserActivity.prototype,
         function ([activity]) {
@@ -27,9 +28,24 @@ export default (data) => {
           });
         }
       );
+      unpatchTimePlayed = instead(
+        "renderTimePlayed",
+        UserActivity.prototype,
+        function ([activity], orig) {
+          if (
+            activity.timestamps != null &&
+            activity.timestamps.start != null &&
+            activity.timestamps.end != null
+          )
+            return null;
+
+          return orig([activity]);
+        }
+      );
     },
     onUnload() {
-      unpatch();
+      unpatchTimeBar();
+      unpatchTimePlayed();
     },
   };
 };
