@@ -40,3 +40,13 @@ Preview message links
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLinkPreview/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
+
+## Time Bar All Activities
+Adds the Spotify time bar to all activities if they have start and end timestamps
+
+<a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/TimeBarAllActivities/">![Get on Condom](/.assets/condom.png)</a>
+<details>
+  <summary>Install from source</summary>
+
+  <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/TimeBarAllActivities/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+</details>
