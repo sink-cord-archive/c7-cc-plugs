@@ -23,7 +23,7 @@ const {renderMaskedLinkComponent} = findByProps("renderMaskedLinkComponent");
 const GuildStore = findByProps("getGuild");
 const ChannelStore = findByProps("getChannel", "getDMUserIds");
 const MessageStore = findByProps("getMessage", "getMessages");
-const UserSettingsStore = findByProps("messageDisplayCompact");
+const UserSettingsStore = findByProps("MessageDisplayCompact");
 
 const SearchResultClasses = findByProps(
   "searchResult",
@@ -143,7 +143,7 @@ export default function MessagePreviewAccessory(props) {
                 channel: referencedChannel,
                 animateAvatar: false,
                 subscribeToComponentDispatch: false,
-                compact: UserSettingsStore.messageDisplayCompact,
+                compact: UserSettingsStore.MessageDisplayCompact.getSetting(),
               })
             ),
         })
