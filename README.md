@@ -21,16 +21,6 @@ Shows typing indicators on channels
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/ChannelTypingIndicator/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
 
-## Quick Spoiler
-Add a button to the new attachment area to quickly toggle spoilering of a file
-
-<a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/QuickSpoiler/">![Get on Condom](/.assets/condom.png)</a>
-<details>
-  <summary>Install from source</summary>
-
-  <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/QuickSpoiler/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
-</details>
-
 ## Message Link Preview
 Preview message links
 
@@ -49,4 +39,11 @@ Adds the Spotify time bar to all activities if they have start and end timestamp
   <summary>Install from source</summary>
 
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/TimeBarAllActivities/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+</details>
+
+# Deprecated Plugins
+
+<details>
+  <summary><h2>Quick Spoiler</h2></summary>
+  Add a button to the new attachment area to quickly toggle spoilering of a file. Added to Discord officially as of Canary 109947.
 </details>
