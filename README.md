@@ -41,6 +41,11 @@ Adds the Spotify time bar to all activities if they have start and end timestamp
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/TimeBarAllActivities/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
 
+## 🗿
+🗿
+
+<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Moyai/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+
 # Deprecated Plugins
 
 <details>
