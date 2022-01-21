@@ -46,6 +46,11 @@ Adds the Spotify time bar to all activities if they have start and end timestamp
 
 <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Moyai/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 
+## Greentext
+Adds 4chan greentext markdown
+
+<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Greentext/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+
 # Deprecated Plugins
 
 <details>

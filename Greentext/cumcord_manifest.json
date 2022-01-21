@@ -1,0 +1,7 @@
+{
+  "name": "Greentext",
+  "description": "Adds 4chan greentext markdown",
+  "author": "Cynosphere",
+  "file": "plugin.js",
+  "license": "MIT"
+}
