@@ -49,7 +49,12 @@ Adds the Spotify time bar to all activities if they have start and end timestamp
 ## Greentext
 Adds 4chan greentext markdown
 
-<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Greentext/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+<a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/Greentext/">![Get on Condom](/.assets/condom.png)</a>
+<details>
+  <summary>Install from source</summary>
+
+  <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Greentext/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+</details>
 
 # Deprecated Plugins
 
