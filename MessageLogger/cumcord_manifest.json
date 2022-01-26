@@ -1,0 +1,7 @@
+{
+  "name": "Message Logger",
+  "description": "Temporarily logs edits and deletes locally for moderation purposes",
+  "author": "Cynosphere",
+  "file": "plugin.js",
+  "license": "MIT"
+}
