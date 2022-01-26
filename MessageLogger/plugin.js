@@ -198,6 +198,33 @@ export default () => {
       );
     },
     onUnload() {
+      for (const channelId in ChannelMessages._channelMessages) {
+        const messages = ChannelMessages._channelMessages[channelId]._array;
+        for (const message of messages) {
+          if (message.deleted) {
+            DispatcherImpl.dirtyDispatch({
+              type: "MESSAGE_DELETE",
+              channelId: message.channel_id,
+              id: message.id,
+              __messageLogger: true,
+            });
+          }
+          if (message.edits) {
+            const data = message.toJS();
+            delete data.edits;
+            DispatcherImpl.dirtyDispatch({
+              message: {
+                ...data,
+                id: message.id,
+                channel_id: message.channel_id,
+                guild_id: ChannelStore.getChannel(message.channel_id).guild_id,
+              },
+              type: "MESSAGE_UPDATE",
+            });
+          }
+        }
+      }
+
       for (const unpatch of patches) unpatch();
     },
   };
