@@ -157,7 +157,6 @@ export default () => {
 
       patches.push(
         after("type", MessageContent, function ([{message}], ret) {
-          console.log(message, ret);
           const edits = (message.edits ?? []).map((edit) => {
             return React.createElement(
               "div",
