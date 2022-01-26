@@ -15,11 +15,12 @@ export default (data) => {
         "render",
         MessageAccessories.prototype,
         function (_, ret) {
-          ret.props.children.push(
-            React.createElement(MessagePreviewAccessory, {
-              message: this.props.message,
-            })
-          );
+          if (this.props)
+            ret.props.children.push(
+              React.createElement(MessagePreviewAccessory, {
+                message: this.props.message,
+              })
+            );
         }
       );
     },
