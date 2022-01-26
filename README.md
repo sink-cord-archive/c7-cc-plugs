@@ -61,6 +61,11 @@ Temporarily logs edits and deletes locally for moderation purposes
 
 <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLogger/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 
+## Role Colored Messages
+Colors messages based on role color
+
+<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/RoleColoredMessages/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+
 # Deprecated Plugins
 
 <details>

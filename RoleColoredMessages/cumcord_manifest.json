@@ -1,0 +1,7 @@
+{
+  "name": "Role Colored Messages",
+  "description": "Colors messages based on role color",
+  "author": "Cynosphere",
+  "file": "plugin.js",
+  "license": "MIT"
+}
