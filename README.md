@@ -56,6 +56,11 @@ Adds 4chan greentext markdown
   <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/Greentext/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
 </details>
 
+## Message Logger
+Temporarily logs edits and deletes locally for moderation purposes
+
+<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/MessageLogger/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+
 # Deprecated Plugins
 
 <details>
