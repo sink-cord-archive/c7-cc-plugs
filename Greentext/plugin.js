@@ -23,7 +23,8 @@ export default (data) => {
               greentext: {
                 order: SimpleMarkdown.defaultRules.text.order,
                 match: function (text, state) {
-                  if (state.inGreentext || state.inQuote) return null;
+                  if (state.inGreentext || state.inQuote || state.inline)
+                    return null;
                   return (
                     /^$|\n$/.test(
                       state.prevCapture != null ? state.prevCapture[0] : ""
