@@ -15,7 +15,7 @@ export default (data) => {
         "render",
         MessageAccessories.prototype,
         function (_, ret) {
-          if (this.props)
+          if (this?.props && ret?.props)
             ret.props.children.push(
               React.createElement(MessagePreviewAccessory, {
                 message: this.props.message,
