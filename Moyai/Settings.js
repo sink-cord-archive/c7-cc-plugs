@@ -38,6 +38,17 @@ export default function MoyaiSettings() {
             typeof event == "object" ? event.target.checked : event),
       },
       "Play on reactions"
+    ),
+    React.createElement(
+      SwitchItem,
+      {
+        value: persist.ghost.husk || false,
+        hideBorder: true,
+        onChange: (event) =>
+          (persist.store.husk =
+            typeof event == "object" ? event.target.checked : event),
+      },
+      "Play for Aliucord husk"
     )
   );
 }

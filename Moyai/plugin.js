@@ -57,6 +57,10 @@ export default (data) => {
         count += (event.message.content.match(/<a?:.*?moy?ai.*?:.+?>/gi) || [])
           .length;
 
+        if (data.persist.ghost.husk)
+          count += (event.message.content.match(/<a?:.*?husk.*?:.+?>/gi) || [])
+            .length;
+
         if (count > 0) {
           for (let i = 0; i < count; i++) {
             setTimeout(this.playAudio.bind(this), i * 350);
@@ -68,7 +72,9 @@ export default (data) => {
       if (
         data.persist.ghost.allowReactions &&
         event.channelId == getChannelId() &&
-        (event.emoji.name == "🗿" || event.emoji.name.match(/.*?moy?ai.*?/)) &&
+        (event.emoji.name == "🗿" ||
+          event.emoji.name.match(/.*?moy?ai.*?/) ||
+          (data.persist.ghost.husk && event.emoji.name.match(/.*?husk.*?/))) &&
         !event.optimistic
       ) {
         this.playAudio();
