@@ -1,0 +1,7 @@
+{
+  "name": "Better Upload Button",
+  "description": "Makes uploading single click and menu right click instead of double click and single click",
+  "author": "Cynosphere",
+  "file": "plugin.js",
+  "license": "MIT"
+}
