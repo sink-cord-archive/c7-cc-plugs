@@ -15,8 +15,10 @@ export default () => {
     onLoad() {
       unpatch = after("type", MessageContent, function ([{message}], ret) {
         if (message.author?.id != "1") {
-          const guildId = ChannelStore.getChannel(message.channel_id).guild_id;
-          const member = MemberStore.getMember(guildId, message.author.id);
+          const guildId = ChannelStore.getChannel(message.channel_id)?.guild_id;
+          const member = guildId
+            ? MemberStore.getMember(guildId, message.author.id)
+            : null;
 
           if (member?.colorString) {
             const theme = UserSettingsStore.ThemeDoNotUseYet.getSetting();
