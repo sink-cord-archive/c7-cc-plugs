@@ -1,4 +1,4 @@
-!#/bin/sh
+#1/bin/sh
 
 mkdir .dist
 cp index.html .dist
