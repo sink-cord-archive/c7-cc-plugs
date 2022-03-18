@@ -4,6 +4,7 @@ pages:
   stage: deploy
   before_script:
     - yarn global add sperm
+    - chmod +x ./build.sh
   script:
     - ./build.sh
   artifacts:
