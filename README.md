@@ -1,5 +1,4 @@
 # [Cumcord](https://cumcord.com) Plugins
-Compatible with The Cum Zone. Just add `https://cc.c7.pm/` or `https://cynosphere.gitlab.io/cumcord-plugins/` to your repos.
 
 ## Platform Icons
 Shows icons for users platform states
