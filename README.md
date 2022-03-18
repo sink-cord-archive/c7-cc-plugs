@@ -79,7 +79,13 @@ Colors messages based on role color
 ## Better Upload Button
 Makes uploading single click and menu right click instead of double click and single click
 
-<a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/BetterUploadButton/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+<a target="_blank" href="https://send.cumcord.com/#https://cumcordplugins.github.io/Condom/cc.c7.pm/BetterUploadButton/">![Get on Condom](/.assets/condom.png)</a>
+<details>
+  <summary>Install from source</summary>
+
+  <a target="_blank" href="https://send.cumcord.com/#https://cc.c7.pm/BetterUploadButton/">![Send to Cumcord](/.assets/sendtocumcord.png)</a>
+</details>
+
 
 # Deprecated Plugins
 
