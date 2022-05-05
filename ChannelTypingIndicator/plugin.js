@@ -8,13 +8,7 @@ import {after} from "@cumcord/patcher";
 import {React, FluxDispatcher} from "@cumcord/modules/common";
 
 const TypingClasses = findByProps("typing", "ellipsis");
-const AnimatedSVG = find(
-  (mod) =>
-    mod.default &&
-    mod.default.type &&
-    typeof mod.default.type == "function" &&
-    mod.default.type.toString().match(/dotRadius:.,dotPosition:./)
-).default;
+const AnimatedSVG = findByProps("AnimatedDots", "default").default;
 const ChannelItem = findByDisplayName("ChannelItem", false);
 
 const typingUsers = {};
