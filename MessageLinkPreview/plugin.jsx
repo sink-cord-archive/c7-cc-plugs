@@ -8,20 +8,17 @@ const {MessageAccessories} = findByProps("MessageAccessories");
 
 let unpatch;
 
-export default (data) => {
-  return {
-    onLoad() {
-      unpatch = after(
-        "render",
-        MessageAccessories.prototype,
-        function(_, ret) {
-          if (this?.props && ret?.props)
-            ret.props.children.push(
-              <MessagePreviewAccessory message={this.props.message} />
-            );
-        }
-      );
-    },
-    onUnload: () => unpatch()
-  };
-};
+export function onLoad() {
+  unpatch = after(
+    "render",
+    MessageAccessories.prototype,
+    function(_, ret) {
+      if (this?.props && ret?.props)
+        ret.props.children.push(
+          <MessagePreviewAccessory message={this.props.message} />
+        );
+    }
+  );
+}
+
+export const onUnload = () => unpatch();

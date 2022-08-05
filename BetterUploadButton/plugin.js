@@ -12,40 +12,37 @@ const ChannelAttachMenu = findByDisplayName("ChannelAttachMenu", false);
 
 const patches = [];
 
-export default () => {
-  return {
-    onLoad() {
-      patches.push(
-        after("type", UploadButton, function(args, ret) {
-          const button = findInReactTree(
-            ret,
-            (x) => typeof x?.children === "function"
-          );
-          if (button)
-            after("children", button, function(args, ret) {
-              const openMenu = ret.props.onClick;
-              const instaUpload = ret.props.onDoubleClick;
-
-              ret.props.onClick = instaUpload;
-              ret.props.onContextMenu = openMenu;
-              delete ret.props.onDoubleClick;
-              console.log(ret);
-            });
-        })
+export function onLoad() {
+  patches.push(
+    after("type", UploadButton, function(args, ret) {
+      const button = findInReactTree(
+        ret,
+        (x) => typeof x?.children === "function"
       );
+      if (button)
+        after("children", button, function(args, ret) {
+          const openMenu = ret.props.onClick;
+          const instaUpload = ret.props.onDoubleClick;
 
-      patches.push(
-        after("default", ChannelAttachMenu, function(args, ret) {
-          const uploadFile = findInReactTree(
-            ret,
-            (x) => x?.id === "upload-file"
-          );
-          if (uploadFile) {
-            delete uploadFile.subtext;
-          }
-        })
+          ret.props.onClick = instaUpload;
+          ret.props.onContextMenu = openMenu;
+          delete ret.props.onDoubleClick;
+          console.log(ret);
+        });
+    })
+  );
+
+  patches.push(
+    after("default", ChannelAttachMenu, function(args, ret) {
+      const uploadFile = findInReactTree(
+        ret,
+        (x) => x?.id === "upload-file"
       );
-    },
-    onUnload: () => patches.forEach(e => e())
-  };
-};
+      if (uploadFile) {
+        delete uploadFile.subtext;
+      }
+    })
+  );
+}
+
+export const onUnload = () => patches.forEach(e => e())

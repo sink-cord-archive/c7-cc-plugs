@@ -84,134 +84,131 @@ const css = `.ml-deleted {
   opacity: 0.5;
 }`;
 
-export default () => {
-  return {
-    onLoad() {
-      injectCSS(css);
+export function onLoad() {
+  injectCSS(css);
 
-      // stackable, feel free to use in your own plugins
-      patches.push(
-        instead("dispatch", Dispatcher.prototype, function([event], orig) {
-          event = interceptEvent(event);
+  // stackable, feel free to use in your own plugins
+  patches.push(
+    instead("dispatch", Dispatcher.prototype, function([event], orig) {
+      event = interceptEvent(event);
 
-          if (event) {
-            orig.apply(this, [event]);
-          }
-        })
-      );
+      if (event) {
+        orig.apply(this, [event]);
+      }
+    })
+  );
 
-      patches.push(
-        instead(
-          "updateMessageRecord",
-          MessageRecord,
-          function([oldRecord, newRecord], orig) {
-            if (newRecord.deleted) {
-              return MessageRecord.createMessageRecord(
-                newRecord,
-                oldRecord.reactions
-              );
-            }
-
-            return orig.apply(this, [oldRecord, newRecord]);
-          }
-        )
-      );
-
-      patches.push(
-        after(
-          "createMessageRecord",
-          MessageRecord,
-          function([message], record) {
-            record.edits = message.edits;
-            record.deleted = message.deleted;
-          }
-        )
-      );
-
-      patches.push(
-        after(
-          "compare",
-          MessageContent,
-          function([oldProps, newProps], shouldUpdate) {
-            return (
-              shouldUpdate &&
-              oldProps.message.edits === newProps.message.edits &&
-              oldProps.message.deleted === newProps.message.deleted
-            );
-          }
-        )
-      );
-
-      const MessageProto = Message.default.prototype;
-      patches.push(
-        after("default", Message, function([props], message) {
-          message.deleted = !!props.deleted;
-          message.edits = props.edits;
-
-          message.prototype = MessageProto;
-          message.__proto__ = MessageProto;
-
-          return message;
-        })
-      );
-
-      patches.push(
-        after("type", MessageContent, function([{message}], ret) {
-          const edits = (message.edits ?? []).map((edit) =>
-            <div className={[
-              MarkupClasses.markup,
-              MessageClasses.messageContent,
-              "ml-edit"
-            ].join(" ")}>
-              {SimpleMarkdown.parse(edit.content)}
-              {" "}
-              <MessageTimestamp timestamp={edit.timestamp} isEdited={true} isInline={true}>
-                <span className={MessageClasses.edited}>
-                  ({edit.original ? "original" : "past edit"})
-                </span>
-              </MessageTimestamp>
-            </div>);
-
-          if (message.deleted) {
-            ret.props.className += " ml-deleted";
-            ret.props.children.push(
-              <span className="ml-deleted-suffix">{" "}(deleted)</span>
-            );
-          }
-
-          return edits.length > 0 ? [...edits, ret] : ret;
-        })
-      );
-    },
-    onUnload() {
-      for (const channelId in ChannelMessages._channelMessages) {
-        const messages = ChannelMessages._channelMessages[channelId]._array;
-        for (const message of messages) {
-          if (message.deleted) {
-            DispatcherImpl._dispatch({
-              type: "MESSAGE_DELETE",
-              channelId: message.channel_id,
-              id: message.id,
-              __messageLogger: true
-            });
-          }
-          if (message.edits) {
-            const data = message.toJS();
-            delete data.edits;
-            DispatcherImpl._dispatch({
-              message: {
-                ...data,
-                id: message.id,
-                channel_id: message.channel_id,
-                guild_id: ChannelStore.getChannel(message.channel_id).guild_id
-              },
-              type: "MESSAGE_UPDATE"
-            });
-          }
+  patches.push(
+    instead(
+      "updateMessageRecord",
+      MessageRecord,
+      function([oldRecord, newRecord], orig) {
+        if (newRecord.deleted) {
+          return MessageRecord.createMessageRecord(
+            newRecord,
+            oldRecord.reactions
+          );
         }
+
+        return orig.apply(this, [oldRecord, newRecord]);
+      }
+    )
+  );
+
+  patches.push(
+    after(
+      "createMessageRecord",
+      MessageRecord,
+      function([message], record) {
+        record.edits = message.edits;
+        record.deleted = message.deleted;
+      }
+    )
+  );
+
+  patches.push(
+    after(
+      "compare",
+      MessageContent,
+      function([oldProps, newProps], shouldUpdate) {
+        return (
+          shouldUpdate &&
+          oldProps.message.edits === newProps.message.edits &&
+          oldProps.message.deleted === newProps.message.deleted
+        );
+      }
+    )
+  );
+
+  const MessageProto = Message.default.prototype;
+  patches.push(
+    after("default", Message, function([props], message) {
+      message.deleted = !!props.deleted;
+      message.edits = props.edits;
+
+      message.prototype = MessageProto;
+      message.__proto__ = MessageProto;
+
+      return message;
+    })
+  );
+
+  patches.push(
+    after("type", MessageContent, function([{message}], ret) {
+      const edits = (message.edits ?? []).map((edit) =>
+        <div className={[
+          MarkupClasses.markup,
+          MessageClasses.messageContent,
+          "ml-edit"
+        ].join(" ")}>
+          {SimpleMarkdown.parse(edit.content)}
+          {" "}
+          <MessageTimestamp timestamp={edit.timestamp} isEdited={true} isInline={true}>
+            <span className={MessageClasses.edited}>
+              ({edit.original ? "original" : "past edit"})
+            </span>
+          </MessageTimestamp>
+        </div>);
+
+      if (message.deleted) {
+        ret.props.className += " ml-deleted";
+        ret.props.children.push(
+          <span className="ml-deleted-suffix">{" "}(deleted)</span>
+        );
       }
 
-      for (const unpatch of patches) unpatch();
+      return edits.length > 0 ? [...edits, ret] : ret;
+    })
+  );
+}
+
+export function onUnload() {
+  for (const channelId in ChannelMessages._channelMessages) {
+    const messages = ChannelMessages._channelMessages[channelId]._array;
+    for (const message of messages) {
+      if (message.deleted) {
+        DispatcherImpl._dispatch({
+          type: "MESSAGE_DELETE",
+          channelId: message.channel_id,
+          id: message.id,
+          __messageLogger: true
+        });
+      }
+      if (message.edits) {
+        const data = message.toJS();
+        delete data.edits;
+        DispatcherImpl._dispatch({
+          message: {
+            ...data,
+            id: message.id,
+            channel_id: message.channel_id,
+            guild_id: ChannelStore.getChannel(message.channel_id).guild_id
+          },
+          type: "MESSAGE_UPDATE"
+        });
+      }
     }
-  };
-};
+  }
+
+  for (const unpatch of patches) unpatch();
+}

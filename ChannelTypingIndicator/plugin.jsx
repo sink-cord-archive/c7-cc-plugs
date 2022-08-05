@@ -57,32 +57,29 @@ function TypingIndicator({channel, muted}) {
 
 let unpatch;
 
-export default (data) => {
-  return {
-    onLoad() {
-      FluxDispatcher.subscribe("TYPING_START", eventListener);
-      FluxDispatcher.subscribe("TYPING_STOP", eventListener);
-      FluxDispatcher.subscribe("MESSAGE_CREATE", eventListener);
+export function onLoad() {
+  FluxDispatcher.subscribe("TYPING_START", eventListener);
+  FluxDispatcher.subscribe("TYPING_STOP", eventListener);
+  FluxDispatcher.subscribe("MESSAGE_CREATE", eventListener);
 
-      unpatch = after("default", ChannelItem, function ([props], ret) {
-        const container = findInReactTree(ret, (x) =>
-          x?.className?.startsWith("children-")
-        );
-        if (container)
-          container.children.push(
-            React.createElement(TypingIndicator, {
-              channel: props.channel,
-              muted: props.muted,
-            })
-          );
-      });
-    },
-    onUnload() {
-      FluxDispatcher.unsubscribe("TYPING_START", eventListener);
-      FluxDispatcher.unsubscribe("TYPING_STOP", eventListener);
-      FluxDispatcher.unsubscribe("MESSAGE_CREATE", eventListener);
+  unpatch = after("default", ChannelItem, function ([props], ret) {
+    const container = findInReactTree(ret, (x) =>
+      x?.className?.startsWith("children-")
+    );
+    if (container)
+      container.children.push(
+        React.createElement(TypingIndicator, {
+          channel: props.channel,
+          muted: props.muted,
+        })
+      );
+  });
+}
 
-      unpatch();
-    },
-  };
-};
+export function onUnload() {
+  FluxDispatcher.unsubscribe("TYPING_START", eventListener);
+  FluxDispatcher.unsubscribe("TYPING_STOP", eventListener);
+  FluxDispatcher.unsubscribe("MESSAGE_CREATE", eventListener);
+
+  unpatch();
+}
