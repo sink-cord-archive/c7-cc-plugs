@@ -2,6 +2,6 @@
   "name": "Greentext",
   "description": "Adds 4chan greentext markdown",
   "author": "Cynosphere",
-  "file": "plugin.js",
+  "file": "plugin.jsx",
   "license": "MIT"
 }

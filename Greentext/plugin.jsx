@@ -1,6 +1,6 @@
 import {findByProps} from "@cumcord/modules/webpack";
 import {instead, injectCSS} from "@cumcord/patcher";
-import {React} from "@cumcord/modules/common";
+//import {React} from "@cumcord/modules/common";
 
 const SimpleMarkdown = findByProps("parseEmbedTitle");
 
@@ -40,11 +40,7 @@ export default (data) => {
                   return node;
                 },
                 react: function (node, recurseOutput, state) {
-                  return React.createElement(
-                    "span",
-                    {className: "greentext"},
-                    recurseOutput(node.content, state)
-                  );
+                  return <span className="greentext">{recurseOutput(node.content, state)}</span>
                 },
               },
             },

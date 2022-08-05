@@ -1,11 +1,11 @@
 import {
   find,
   findByDisplayName,
-  findByProps,
-} from "@cumcord/modules/webpackModules";
+  findByProps
+} from "@cumcord/modules/webpack";
 import {findInReactTree} from "@cumcord/utils";
 import {before, after} from "@cumcord/patcher";
-import {React} from "@cumcord/modules/common";
+//import {React} from "@cumcord/modules/common";
 
 import IconsWrapper from "./IconsWrapper";
 
@@ -37,9 +37,7 @@ export default (data) => {
           ret.props.children.splice(
             0,
             0,
-            React.createElement(IconsWrapper, {
-              user: props.user,
-            })
+            <IconsWrapper user={props.user} />
           );
         })
       );
@@ -61,9 +59,7 @@ export default (data) => {
                   }
 
                   props.decorators.push(
-                    React.createElement(IconsWrapper, {
-                      user,
-                    })
+                    <IconsWrapper user={user} />
                   );
                 }
               }
@@ -81,12 +77,11 @@ export default (data) => {
           );
           if (headerText) {
             const nameTag = headerText.children[1];
-            headerText.children[1] = React.createElement(
-              "div",
-              {style: {display: "flex", flexDirection: "row"}},
-              nameTag,
-              React.createElement(IconsWrapper, {user: nameTag.props.user})
-            );
+            headerText.children[1] =
+              <div style={{display: "flex", flexDirection: "row"}}>
+                {nameTag}
+                <IconsWrapper user={nameTag.props.user} />
+              </div>;
           }
         })
       );
@@ -96,6 +91,6 @@ export default (data) => {
         unpatch();
       }
       patches.splice(0, patches.length);
-    },
+    }
   };
 };

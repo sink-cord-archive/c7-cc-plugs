@@ -2,7 +2,7 @@ import {
   find,
   findByDisplayName,
   findByProps,
-} from "@cumcord/modules/webpackModules";
+} from "@cumcord/modules/webpack";
 import {React, constants as Constants} from "@cumcord/modules/common";
 
 const MESSAGE_LINK_REGEX =

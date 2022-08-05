@@ -2,6 +2,6 @@
   "name": "Message Link Preview",
   "description": "Preview message links",
   "author": "Cynosphere",
-  "file": "plugin.js",
+  "file": "plugin.jsx",
   "license": "MIT"
 }

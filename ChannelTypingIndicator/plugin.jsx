@@ -2,10 +2,10 @@ import {
   find,
   findByProps,
   findByDisplayName,
-} from "@cumcord/modules/webpackModules";
+} from "@cumcord/modules/webpack";
 import {findInReactTree} from "@cumcord/utils";
 import {after} from "@cumcord/patcher";
-import {React, FluxDispatcher} from "@cumcord/modules/common";
+import {FluxDispatcher} from "@cumcord/modules/common";
 
 const TypingClasses = findByProps("typing", "ellipsis");
 const AnimatedSVG = findByProps("AnimatedDots", "default").default;
@@ -50,20 +50,9 @@ function TypingIndicator({channel, muted}) {
 
   return !isTyping || muted
     ? null
-    : React.createElement(
-        "div",
-        {
-          style: {
-            marginLeft: "6px",
-            paddingBottom: "3px",
-          },
-        },
-        React.createElement(AnimatedSVG, {
-          className: TypingClasses.ellipsis,
-          dotRadius: 3.5,
-          themed: true,
-        })
-      );
+    : <div style={{marginLeft: "6px", paddingBottom: "3px"}}>
+        <AnimatedSVG className={TypingClasses.ellipsis} dotRadius={3.5} themed={true}/>
+      </div>
 }
 
 let unpatch;

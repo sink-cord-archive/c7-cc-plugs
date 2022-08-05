@@ -1,4 +1,6 @@
-# [Cumcord](https://cumcord.com) Plugins
+# [C7 Cumcord plugins](https://gitlab.com/Cynosphere/cumcord-plugins) maintained
+
+All originally by @Cynosphere, now just kept up to date if/when they break by @Yellowsink.
 
 ## Platform Icons
 Shows icons for users platform states

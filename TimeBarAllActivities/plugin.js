@@ -1,4 +1,4 @@
-import {findByDisplayName} from "@cumcord/modules/webpackModules";
+import {findByDisplayName} from "@cumcord/modules/webpack";
 import {instead} from "@cumcord/patcher";
 import {React} from "@cumcord/modules/common";
 

@@ -6,3 +6,4 @@ npm-error.log
 package.json
 pnpm-lock.yaml
 .dist/
+.idea

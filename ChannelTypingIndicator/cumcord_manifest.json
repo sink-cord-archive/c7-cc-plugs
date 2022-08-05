@@ -2,6 +2,6 @@
   "name": "Channel Typing Indicator",
   "description": "Shows typing indicators on channels",
   "author": "Cynosphere",
-  "file": "plugin.js",
+  "file": "plugin.jsx",
   "license": "MIT"
 }
