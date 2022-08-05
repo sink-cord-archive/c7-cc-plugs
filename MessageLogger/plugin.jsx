@@ -42,9 +42,9 @@ function interceptEvent(event) {
           id: message.id,
           channel_id: message.channel_id,
           guild_id: ChannelStore.getChannel(message.channel_id).guild_id,
-          deleted: true
+          deleted: true,
         },
-        type: "MESSAGE_UPDATE"
+        type: "MESSAGE_UPDATE",
       });
     });
 
@@ -61,7 +61,7 @@ function interceptEvent(event) {
         event.message.edits.push({
           content: oldMessage.content,
           timestamp: oldMessage.editedTimestamp || oldMessage.timestamp,
-          original: oldMessage.editedTimestamp == null
+          original: oldMessage.editedTimestamp == null,
         });
       }
     }
@@ -89,7 +89,7 @@ export function onLoad() {
 
   // stackable, feel free to use in your own plugins
   patches.push(
-    instead("dispatch", Dispatcher.prototype, function([event], orig) {
+    instead("dispatch", Dispatcher.prototype, function ([event], orig) {
       event = interceptEvent(event);
 
       if (event) {
@@ -102,7 +102,7 @@ export function onLoad() {
     instead(
       "updateMessageRecord",
       MessageRecord,
-      function([oldRecord, newRecord], orig) {
+      function ([oldRecord, newRecord], orig) {
         if (newRecord.deleted) {
           return MessageRecord.createMessageRecord(
             newRecord,
@@ -116,21 +116,17 @@ export function onLoad() {
   );
 
   patches.push(
-    after(
-      "createMessageRecord",
-      MessageRecord,
-      function([message], record) {
-        record.edits = message.edits;
-        record.deleted = message.deleted;
-      }
-    )
+    after("createMessageRecord", MessageRecord, function ([message], record) {
+      record.edits = message.edits;
+      record.deleted = message.deleted;
+    })
   );
 
   patches.push(
     after(
       "compare",
       MessageContent,
-      function([oldProps, newProps], shouldUpdate) {
+      function ([oldProps, newProps], shouldUpdate) {
         return (
           shouldUpdate &&
           oldProps.message.edits === newProps.message.edits &&
@@ -142,7 +138,7 @@ export function onLoad() {
 
   const MessageProto = Message.default.prototype;
   patches.push(
-    after("default", Message, function([props], message) {
+    after("default", Message, function ([props], message) {
       message.deleted = !!props.deleted;
       message.edits = props.edits;
 
@@ -154,26 +150,32 @@ export function onLoad() {
   );
 
   patches.push(
-    after("type", MessageContent, function([{message}], ret) {
-      const edits = (message.edits ?? []).map((edit) =>
-        <div className={[
-          MarkupClasses.markup,
-          MessageClasses.messageContent,
-          "ml-edit"
-        ].join(" ")}>
-          {SimpleMarkdown.parse(edit.content)}
-          {" "}
-          <MessageTimestamp timestamp={edit.timestamp} isEdited={true} isInline={true}>
+    after("type", MessageContent, function ([{message}], ret) {
+      const edits = (message.edits ?? []).map((edit) => (
+        <div
+          className={[
+            MarkupClasses.markup,
+            MessageClasses.messageContent,
+            "ml-edit",
+          ].join(" ")}
+        >
+          {SimpleMarkdown.parse(edit.content)}{" "}
+          <MessageTimestamp
+            timestamp={edit.timestamp}
+            isEdited={true}
+            isInline={true}
+          >
             <span className={MessageClasses.edited}>
               ({edit.original ? "original" : "past edit"})
             </span>
           </MessageTimestamp>
-        </div>);
+        </div>
+      ));
 
       if (message.deleted) {
         ret.props.className += " ml-deleted";
         ret.props.children.push(
-          <span className="ml-deleted-suffix">{" "}(deleted)</span>
+          <span className="ml-deleted-suffix"> (deleted)</span>
         );
       }
 
@@ -191,7 +193,7 @@ export function onUnload() {
           type: "MESSAGE_DELETE",
           channelId: message.channel_id,
           id: message.id,
-          __messageLogger: true
+          __messageLogger: true,
         });
       }
       if (message.edits) {
@@ -202,9 +204,9 @@ export function onUnload() {
             ...data,
             id: message.id,
             channel_id: message.channel_id,
-            guild_id: ChannelStore.getChannel(message.channel_id).guild_id
+            guild_id: ChannelStore.getChannel(message.channel_id).guild_id,
           },
-          type: "MESSAGE_UPDATE"
+          type: "MESSAGE_UPDATE",
         });
       }
     }

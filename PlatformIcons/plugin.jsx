@@ -1,4 +1,8 @@
-import {findByDisplayName, findByDispNameDeep, findByProps} from "@cumcord/modules/webpack";
+import {
+  findByDisplayName,
+  findByDispNameDeep,
+  findByProps,
+} from "@cumcord/modules/webpack";
 import {findInReactTree} from "@cumcord/utils";
 import {after, before} from "@cumcord/patcher";
 //import {React} from "@cumcord/modules/common";
@@ -23,11 +27,7 @@ export function onLoad() {
     patches.push(
       after("renderDecorators", MemberListItem.prototype, (_, ret) => {
         const {props} = ret._owner.stateNode;
-        ret.props.children.splice(
-          0,
-          0,
-          <IconsWrapper user={props.user} />
-        );
+        ret.props.children.splice(0, 0, <IconsWrapper user={props.user} />);
       })
     );
   });
@@ -35,23 +35,26 @@ export function onLoad() {
 
   // dm list
   patches.push(
-    after("render", PrivateChannel.prototype, function(_, ret) {
+    after("render", PrivateChannel.prototype, function (_, ret) {
       //debugger;
       const pcProps = this.props;
       if (pcProps.channel?.type !== 1) return;
       if (!pcProps.user) return;
 
-      patches.push(after("children", ret.props, (_, subRet) => {
-        const target = findInReactTree(subRet, n => n?.decorators !== undefined);
-        if (!target) return;
+      patches.push(
+        after("children", ret.props, (_, subRet) => {
+          const target = findInReactTree(
+            subRet,
+            (n) => n?.decorators !== undefined
+          );
+          if (!target) return;
 
-        if (!Array.isArray(target.decorators))
-          target.decorators = [target.decorators];
+          if (!Array.isArray(target.decorators))
+            target.decorators = [target.decorators];
 
-        target.decorators.push(
-          <IconsWrapper user={pcProps.user} />
-        );
-      }));
+          target.decorators.push(<IconsWrapper user={pcProps.user} />);
+        })
+      );
     })
   );
 
@@ -64,14 +67,15 @@ export function onLoad() {
       );
       if (headerText) {
         const nameTag = headerText.children[1];
-        headerText.children[1] =
+        headerText.children[1] = (
           <div style={{display: "flex", flexDirection: "row"}}>
             {nameTag}
             <IconsWrapper user={nameTag.props.user} />
-          </div>;
+          </div>
+        );
       }
     })
   );
 }
 
-export const onUnload = () => patches.forEach(e => e());
+export const onUnload = () => patches.forEach((e) => e());

@@ -62,7 +62,8 @@ function handleReaction(event) {
       event.emoji.name.match(/.*?moy?ai.*?/) ||
       (persist.ghost.husk && event.emoji.name.match(/.*?husk.*?/))) &&
     !event.optimistic
-  ) playAudio();
+  )
+    playAudio();
 }
 
 export function onLoad() {

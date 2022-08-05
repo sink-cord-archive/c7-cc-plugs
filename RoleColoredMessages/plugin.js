@@ -24,14 +24,13 @@ export function onLoad() {
       const theme = UserSettingsStore.ThemeDoNotUseYet.getSetting();
       const initialColor = tinycolor(member.colorString);
       const isDark = theme === "dark";
-      const adjustedColor =
-        isDark
-          ? initialColor.brighten(30)
-          : initialColor.darken(10);
+      const adjustedColor = isDark
+        ? initialColor.brighten(30)
+        : initialColor.darken(10);
       ret.props.style ??= {};
       ret.props.style.color = adjustedColor.toHslString();
     }
   });
 }
 
-export const onUnload = () => unpatch()
+export const onUnload = () => unpatch();

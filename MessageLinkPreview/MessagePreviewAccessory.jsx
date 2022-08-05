@@ -1,8 +1,4 @@
-import {
-  find,
-  findByDisplayName,
-  findByProps
-} from "@cumcord/modules/webpack";
+import {find, findByDisplayName, findByProps} from "@cumcord/modules/webpack";
 import {constants as Constants} from "@cumcord/modules/common";
 
 const MESSAGE_LINK_REGEX =
@@ -72,10 +68,10 @@ export default function MessagePreviewAccessory(props) {
           url: Constants.Endpoints.MESSAGES(parsedChannelPath.channelId),
           query: {
             limit: 1,
-            around: parsedChannelPath.messageId
+            around: parsedChannelPath.messageId,
           },
           retries: 2,
-          oldFormErrors: true
+          oldFormErrors: true,
         }).then((res) => {
           manualMessageCache.set(
             parsedChannelPath.messageId,
@@ -112,10 +108,10 @@ export default function MessagePreviewAccessory(props) {
         parsedChannelPath.guildId === "@me"
           ? null
           : getGuildIconURL({
-            id: referencedGuild.id,
-            icon: referencedGuild.icon,
-            size: 24
-          });
+              id: referencedGuild.id,
+              icon: referencedGuild.icon,
+              size: 24,
+            });
 
       elements.push(
         <Embed
@@ -126,19 +122,25 @@ export default function MessagePreviewAccessory(props) {
                 parsedChannelPath.guildId == "@me"
                   ? "Direct Message"
                   : `${referencedGuild.name} - #${referencedChannel.name}`,
-              iconProxyURL: icon
-            }
+              iconProxyURL: icon,
+            },
           }}
           renderLinkComponent={renderMaskedLinkComponent}
-          renderDescription={() =>
-            <div className={SearchResultClasses.message} key={referencedMessage.id}>
-              <ChannelMessage id={"message-link-preview-" + referencedMessage.id}
-                              message={referencedMessage}
-                              channel={referencedChannel}
-                              animateAvatar={false}
-                              subscribeToComponentDispatch={false}
-                              compact={UserSettingsStore.MessageDisplayCompact.getSetting()} />
-            </div>}
+          renderDescription={() => (
+            <div
+              className={SearchResultClasses.message}
+              key={referencedMessage.id}
+            >
+              <ChannelMessage
+                id={"message-link-preview-" + referencedMessage.id}
+                message={referencedMessage}
+                channel={referencedChannel}
+                animateAvatar={false}
+                subscribeToComponentDispatch={false}
+                compact={UserSettingsStore.MessageDisplayCompact.getSetting()}
+              />
+            </div>
+          )}
         />
       );
     }

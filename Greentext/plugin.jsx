@@ -15,13 +15,13 @@ let unpatchParse;
 
 export function onLoad() {
   injectCSS(css);
-  unpatchParse = instead("parse", SimpleMarkdown, function(args) {
+  unpatchParse = instead("parse", SimpleMarkdown, function (args) {
     return SimpleMarkdown.reactParserFor(
       Object.assign(
         {
           greentext: {
             order: SimpleMarkdown.defaultRules.text.order,
-            match: function(text, state) {
+            match: function (text, state) {
               if (state.inGreentext || state.inQuote) return null;
               return (
                 /^$|\n$/.test(
@@ -29,19 +29,23 @@ export function onLoad() {
                 ) && /^(>.+?)(?:\n|$)/.exec(text)
               );
             },
-            parse: function(capture, parse, state) {
+            parse: function (capture, parse, state) {
               state.inGreentext = true;
               const node = {
                 content: parse(capture[0], state),
-                type: "greentext"
+                type: "greentext",
               };
               delete state.inGreentext;
               return node;
             },
-            react: function(node, recurseOutput, state) {
-              return <span className="greentext">{recurseOutput(node.content, state)}</span>;
-            }
-          }
+            react: function (node, recurseOutput, state) {
+              return (
+                <span className="greentext">
+                  {recurseOutput(node.content, state)}
+                </span>
+              );
+            },
+          },
         },
         SimpleMarkdown.defaultRules
       )

@@ -12,24 +12,26 @@ export function onLoad() {
   unpatchTimeBar = instead(
     "renderTimeBar",
     UserActivity.prototype,
-    function([activity]) {
+    function ([activity]) {
       const {timestamps} = activity;
       if (!timestamps) return null;
       const {start, end} = timestamps;
       if (!start || !end) return null;
 
-      return <ActivityTimeBar
-        start={start}
-        end={end}
-        className={this.getTypeClass("timeBar")}
-        themed={this.props.type === UserActivity.Types.VOICE_CHANNEL}
-      />;
+      return (
+        <ActivityTimeBar
+          start={start}
+          end={end}
+          className={this.getTypeClass("timeBar")}
+          themed={this.props.type === UserActivity.Types.VOICE_CHANNEL}
+        />
+      );
     }
   );
   unpatchTimePlayed = instead(
     "renderTimePlayed",
     UserActivity.prototype,
-    function([activity], orig) {
+    function ([activity], orig) {
       if (
         activity.timestamps != null &&
         activity.timestamps.start != null &&

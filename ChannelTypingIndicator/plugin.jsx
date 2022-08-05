@@ -1,8 +1,4 @@
-import {
-  find,
-  findByProps,
-  findByDisplayName,
-} from "@cumcord/modules/webpack";
+import {find, findByProps, findByDisplayName} from "@cumcord/modules/webpack";
 import {findInReactTree} from "@cumcord/utils";
 import {after} from "@cumcord/patcher";
 import {FluxDispatcher} from "@cumcord/modules/common";
@@ -48,11 +44,15 @@ function TypingIndicator({channel, muted}) {
     };
   }, [channel.id]);
 
-  return !isTyping || muted
-    ? null
-    : <div style={{marginLeft: "6px", paddingBottom: "3px"}}>
-        <AnimatedSVG className={TypingClasses.ellipsis} dotRadius={3.5} themed={true}/>
-      </div>
+  return !isTyping || muted ? null : (
+    <div style={{marginLeft: "6px", paddingBottom: "3px"}}>
+      <AnimatedSVG
+        className={TypingClasses.ellipsis}
+        dotRadius={3.5}
+        themed={true}
+      />
+    </div>
+  );
 }
 
 let unpatch;
