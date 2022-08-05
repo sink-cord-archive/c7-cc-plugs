@@ -6,7 +6,7 @@ const UploadButton = find(
   (x) =>
     x.type &&
     typeof x.type == "function" &&
-    x.type.toString().indexOf('"Upload Message Attachment Max Size Error"') > -1
+    x.type.toString().indexOf("P.default.Messages.CHAT_ATTACH_UPLOAD_OR_INVITE") > -1
 );
 const ChannelAttachMenu = findByDisplayName("ChannelAttachMenu", false);
 
@@ -16,28 +16,29 @@ export default () => {
   return {
     onLoad() {
       patches.push(
-        after("type", UploadButton, function (args, ret) {
+        after("type", UploadButton, function(args, ret) {
           const button = findInReactTree(
             ret,
-            (x) => x?.children && typeof x.children == "function"
+            (x) => typeof x?.children === "function"
           );
           if (button)
-            after("children", button, function (args, ret) {
-              const onClick = ret.props.onClick;
-              const onDoubleClick = ret.props.onDoubleClick;
+            after("children", button, function(args, ret) {
+              const openMenu = ret.props.onClick;
+              const instaUpload = ret.props.onDoubleClick;
 
-              ret.props.onClick = onDoubleClick;
-              ret.props.onContextMenu = onClick;
+              ret.props.onClick = instaUpload;
+              ret.props.onContextMenu = openMenu;
               delete ret.props.onDoubleClick;
+              console.log(ret);
             });
         })
       );
 
       patches.push(
-        after("default", ChannelAttachMenu, function (args, ret) {
+        after("default", ChannelAttachMenu, function(args, ret) {
           const uploadFile = findInReactTree(
             ret,
-            (x) => x?.id == "upload-file"
+            (x) => x?.id === "upload-file"
           );
           if (uploadFile) {
             delete uploadFile.subtext;
@@ -45,10 +46,6 @@ export default () => {
         })
       );
     },
-    onUnload() {
-      for (const unpatch of patches) {
-        unpatch();
-      }
-    },
+    onUnload: () => patches.forEach(e => e())
   };
 };

@@ -1,8 +1,8 @@
 import {findByProps, find, findByDisplayName} from "@cumcord/modules/webpack";
 import {instead, after, injectCSS} from "@cumcord/patcher";
-import {React} from "@cumcord/modules/common";
+//import {React} from "@cumcord/modules/common";
 
-const MessageContent = find((x) => x?.type?.displayName == "MessageContent");
+const MessageContent = find((x) => x?.type?.displayName === "MessageContent");
 
 const {Dispatcher} = findByProps("Dispatcher");
 const DispatcherImpl = findByProps("_lastID");
@@ -36,15 +36,15 @@ function interceptEvent(event) {
     if (message.state == "SEND_FAILED") return event;
 
     setTimeout(() => {
-      DispatcherImpl.dirtyDispatch({
+      DispatcherImpl._dispatch({
         message: {
           ...message.toJS(),
           id: message.id,
           channel_id: message.channel_id,
           guild_id: ChannelStore.getChannel(message.channel_id).guild_id,
-          deleted: true,
+          deleted: true
         },
-        type: "MESSAGE_UPDATE",
+        type: "MESSAGE_UPDATE"
       });
     });
 
@@ -61,7 +61,7 @@ function interceptEvent(event) {
         event.message.edits.push({
           content: oldMessage.content,
           timestamp: oldMessage.editedTimestamp || oldMessage.timestamp,
-          original: oldMessage.editedTimestamp == null,
+          original: oldMessage.editedTimestamp == null
         });
       }
     }
@@ -91,7 +91,7 @@ export default () => {
 
       // stackable, feel free to use in your own plugins
       patches.push(
-        instead("dispatch", Dispatcher.prototype, function ([event], orig) {
+        instead("dispatch", Dispatcher.prototype, function([event], orig) {
           event = interceptEvent(event);
 
           if (event) {
@@ -104,7 +104,7 @@ export default () => {
         instead(
           "updateMessageRecord",
           MessageRecord,
-          function ([oldRecord, newRecord], orig) {
+          function([oldRecord, newRecord], orig) {
             if (newRecord.deleted) {
               return MessageRecord.createMessageRecord(
                 newRecord,
@@ -121,7 +121,7 @@ export default () => {
         after(
           "createMessageRecord",
           MessageRecord,
-          function ([message], record) {
+          function([message], record) {
             record.edits = message.edits;
             record.deleted = message.deleted;
           }
@@ -132,7 +132,7 @@ export default () => {
         after(
           "compare",
           MessageContent,
-          function ([oldProps, newProps], shouldUpdate) {
+          function([oldProps, newProps], shouldUpdate) {
             return (
               shouldUpdate &&
               oldProps.message.edits === newProps.message.edits &&
@@ -144,7 +144,7 @@ export default () => {
 
       const MessageProto = Message.default.prototype;
       patches.push(
-        after("default", Message, function ([props], message) {
+        after("default", Message, function([props], message) {
           message.deleted = !!props.deleted;
           message.edits = props.edits;
 
@@ -156,39 +156,26 @@ export default () => {
       );
 
       patches.push(
-        after("type", MessageContent, function ([{message}], ret) {
-          const edits = (message.edits ?? []).map((edit) => {
-            return React.createElement(
-              "div",
-              {
-                className: [
-                  MarkupClasses.markup,
-                  MessageClasses.messageContent,
-                  "ml-edit",
-                ].join(" "),
-              },
-              SimpleMarkdown.parse(edit.content),
-              " ",
-              React.createElement(
-                MessageTimestamp,
-                {timestamp: edit.timestamp, isEdited: true, isInline: false},
-                React.createElement(
-                  "span",
-                  {className: MessageClasses.edited},
-                  `(${edit.original ? "original" : "past edit"})`
-                )
-              )
-            );
-          });
+        after("type", MessageContent, function([{message}], ret) {
+          const edits = (message.edits ?? []).map((edit) =>
+            <div className={[
+              MarkupClasses.markup,
+              MessageClasses.messageContent,
+              "ml-edit"
+            ].join(" ")}>
+              {SimpleMarkdown.parse(edit.content)}
+              {" "}
+              <MessageTimestamp timestamp={edit.timestamp} isEdited={true} isInline={true}>
+                <span className={MessageClasses.edited}>
+                  ({edit.original ? "original" : "past edit"})
+                </span>
+              </MessageTimestamp>
+            </div>);
 
           if (message.deleted) {
             ret.props.className += " ml-deleted";
             ret.props.children.push(
-              React.createElement(
-                "span",
-                {className: "ml-deleted-suffix"},
-                " (deleted)"
-              )
+              <span className="ml-deleted-suffix">{" "}(deleted)</span>
             );
           }
 
@@ -201,30 +188,30 @@ export default () => {
         const messages = ChannelMessages._channelMessages[channelId]._array;
         for (const message of messages) {
           if (message.deleted) {
-            DispatcherImpl.dirtyDispatch({
+            DispatcherImpl._dispatch({
               type: "MESSAGE_DELETE",
               channelId: message.channel_id,
               id: message.id,
-              __messageLogger: true,
+              __messageLogger: true
             });
           }
           if (message.edits) {
             const data = message.toJS();
             delete data.edits;
-            DispatcherImpl.dirtyDispatch({
+            DispatcherImpl._dispatch({
               message: {
                 ...data,
                 id: message.id,
                 channel_id: message.channel_id,
-                guild_id: ChannelStore.getChannel(message.channel_id).guild_id,
+                guild_id: ChannelStore.getChannel(message.channel_id).guild_id
               },
-              type: "MESSAGE_UPDATE",
+              type: "MESSAGE_UPDATE"
             });
           }
         }
       }
 
       for (const unpatch of patches) unpatch();
-    },
+    }
   };
 };

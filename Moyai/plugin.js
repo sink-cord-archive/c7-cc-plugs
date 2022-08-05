@@ -49,9 +49,9 @@ export default (data) => {
     handleMessage(event) {
       if (
         event.message.content &&
-        event.channelId == getChannelId() &&
+        event.channelId === getChannelId() &&
         !event.message.state &&
-        event.sendMessageOptions == undefined
+        event.sendMessageOptions === undefined
       ) {
         let count = (event.message.content.match(/🗿/g) || []).length;
         count += (event.message.content.match(/<a?:.*?moy?ai.*?:.+?>/gi) || [])
@@ -71,8 +71,8 @@ export default (data) => {
     handleReaction(event) {
       if (
         data.persist.ghost.allowReactions &&
-        event.channelId == getChannelId() &&
-        (event.emoji.name == "🗿" ||
+        event.channelId === getChannelId() &&
+        (event.emoji.name === "🗿" ||
           event.emoji.name.match(/.*?moy?ai.*?/) ||
           (data.persist.ghost.husk && event.emoji.name.match(/.*?husk.*?/))) &&
         !event.optimistic

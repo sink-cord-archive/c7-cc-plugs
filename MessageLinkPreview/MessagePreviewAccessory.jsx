@@ -1,16 +1,16 @@
 import {
   find,
   findByDisplayName,
-  findByProps,
+  findByProps
 } from "@cumcord/modules/webpack";
-import {React, constants as Constants} from "@cumcord/modules/common";
+import {constants as Constants} from "@cumcord/modules/common";
 
 const MESSAGE_LINK_REGEX =
   /https?:\/\/(?:\w+\.)?discord(?:app)?\.com\/channels\/(\d{17,19}|@me)\/(\d{17,19})\/(\d{17,19})/g;
 const CHANNEL_PATH_REGEX = /\/channels\/(\d+|@me)(?:\/)?(\d+)(?:\/)(\d+)/;
 
 const {default: ChannelMessage} = find(
-  (x) => x?.default?.type?.displayName == "ChannelMessage"
+  (x) => x?.default?.type?.displayName === "ChannelMessage"
 );
 const Embed = findByDisplayName("Embed");
 
@@ -49,10 +49,10 @@ export default function MessagePreviewAccessory(props) {
       const parsedChannelPath =
         ChannelPathHelper.tryParseChannelPath(channelPath);
 
-      if (parsedChannelPath.messageId == message.id) continue;
+      if (parsedChannelPath.messageId === message.id) continue;
 
       const referencedGuild =
-        parsedChannelPath.guildId == "@me"
+        parsedChannelPath.guildId === "@me"
           ? null
           : GuildStore.getGuild(parsedChannelPath.guildId);
       const referencedChannel = ChannelStore.getChannel(
@@ -72,10 +72,10 @@ export default function MessagePreviewAccessory(props) {
           url: Constants.Endpoints.MESSAGES(parsedChannelPath.channelId),
           query: {
             limit: 1,
-            around: parsedChannelPath.messageId,
+            around: parsedChannelPath.messageId
           },
           retries: 2,
-          oldFormErrors: true,
+          oldFormErrors: true
         }).then((res) => {
           manualMessageCache.set(
             parsedChannelPath.messageId,
@@ -100,7 +100,7 @@ export default function MessagePreviewAccessory(props) {
           const subPath = sublink.match(CHANNEL_PATH_REGEX)[0];
           const parsedSubPath = ChannelPathHelper.tryParseChannelPath(subPath);
 
-          if (parsedSubPath.messageId == message.id) {
+          if (parsedSubPath.messageId === message.id) {
             endRecurse = true;
             break;
           }
@@ -109,44 +109,37 @@ export default function MessagePreviewAccessory(props) {
       }
 
       const icon =
-        parsedChannelPath.guildId == "@me"
+        parsedChannelPath.guildId === "@me"
           ? null
           : getGuildIconURL({
-              id: referencedGuild.id,
-              icon: referencedGuild.icon,
-              size: 24,
-            });
+            id: referencedGuild.id,
+            icon: referencedGuild.icon,
+            size: 24
+          });
 
       elements.push(
-        React.createElement(Embed, {
-          embed: {
+        <Embed
+          embed={{
             rawDescription: "",
             author: {
               name:
                 parsedChannelPath.guildId == "@me"
                   ? "Direct Message"
                   : `${referencedGuild.name} - #${referencedChannel.name}`,
-              iconProxyURL: icon,
-            },
-          },
-          renderLinkComponent: renderMaskedLinkComponent,
-          renderDescription: () =>
-            React.createElement(
-              "div",
-              {
-                className: SearchResultClasses.message,
-                key: referencedMessage.id,
-              },
-              React.createElement(ChannelMessage, {
-                id: "message-link-preview-" + referencedMessage.id,
-                message: referencedMessage,
-                channel: referencedChannel,
-                animateAvatar: false,
-                subscribeToComponentDispatch: false,
-                compact: UserSettingsStore.MessageDisplayCompact.getSetting(),
-              })
-            ),
-        })
+              iconProxyURL: icon
+            }
+          }}
+          renderLinkComponent={renderMaskedLinkComponent}
+          renderDescription={() =>
+            <div className={SearchResultClasses.message} key={referencedMessage.id}>
+              <ChannelMessage id={"message-link-preview-" + referencedMessage.id}
+                              message={referencedMessage}
+                              channel={referencedChannel}
+                              animateAvatar={false}
+                              subscribeToComponentDispatch={false}
+                              compact={UserSettingsStore.MessageDisplayCompact.getSetting()} />
+            </div>}
+        />
       );
     }
 

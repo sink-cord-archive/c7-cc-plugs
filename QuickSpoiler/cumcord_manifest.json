@@ -1,7 +1,0 @@
-{
-  "name": "Quick Spoiler",
-  "description": "Add a button to the new attachment area to quickly toggle spoilering of a file",
-  "author": "Cynosphere",
-  "file": "plugin.jsx",
-  "license": "MIT"
-}
