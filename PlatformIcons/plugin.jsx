@@ -1,9 +1,10 @@
 import {
   findByDisplayName,
   findByDispNameDeep,
-  findByProps,
+  findByProps
 } from "@cumcord/modules/webpack";
 import {findInReactTree} from "@cumcord/utils";
+import {warn} from "@cumcord/utils/logger";
 import {after, before} from "@cumcord/patcher";
 //import {React} from "@cumcord/modules/common";
 import IconsWrapper from "./IconsWrapper";
@@ -35,26 +36,29 @@ export function onLoad() {
 
   // dm list
   patches.push(
-    after("render", PrivateChannel.prototype, function (_, ret) {
+    after("render", PrivateChannel.prototype, function(_, ret) {
       //debugger;
       const pcProps = this.props;
       if (pcProps.channel?.type !== 1) return;
       if (!pcProps.user) return;
 
-      patches.push(
-        after("children", ret.props, (_, subRet) => {
-          const target = findInReactTree(
-            subRet,
-            (n) => n?.decorators !== undefined
-          );
-          if (!target) return;
+      if (typeof ret.props?.children !== "function")
+        warn("|| PlatformIcons || unexpected dmlist props type; PLEASE REPORT THIS TO SINK", ret.props, ret.props?.children);
+      else
+        patches.push(
+          after("children", ret.props, (_, subRet) => {
+            const target = findInReactTree(
+              subRet,
+              (n) => n?.decorators !== undefined
+            );
+            if (!target) return;
 
-          if (!Array.isArray(target.decorators))
-            target.decorators = [target.decorators];
+            if (!Array.isArray(target.decorators))
+              target.decorators = [target.decorators];
 
-          target.decorators.push(<IconsWrapper user={pcProps.user} />);
-        })
-      );
+            target.decorators.push(<IconsWrapper user={pcProps.user} />);
+          })
+        );
     })
   );
 
