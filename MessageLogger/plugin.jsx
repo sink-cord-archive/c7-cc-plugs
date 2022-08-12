@@ -1,11 +1,8 @@
-import {findByProps, find, findByDisplayName} from "@cumcord/modules/webpack";
-import {instead, after, injectCSS} from "@cumcord/patcher";
-//import {React} from "@cumcord/modules/common";
+import { findByProps, find, findByDisplayName } from "@cumcord/modules/webpack";
+import { instead, after, injectCSS } from "@cumcord/patcher";
+import { FluxDispatcher } from "@cumcord/modules/common";
 
 const MessageContent = find((x) => x?.type?.displayName === "MessageContent");
-
-const {Dispatcher} = findByProps("Dispatcher");
-const DispatcherImpl = findByProps("_lastID");
 
 const ChannelMessages = findByProps("_channelMessages");
 const ChannelStore = findByProps("getChannel", "getDMUserIds");
@@ -36,7 +33,7 @@ function interceptEvent(event) {
     if (message.state == "SEND_FAILED") return event;
 
     setTimeout(() => {
-      DispatcherImpl._dispatch({
+      FluxDispatcher.dispatch({
         message: {
           ...message.toJS(),
           id: message.id,
@@ -89,51 +86,40 @@ export function onLoad() {
 
   // stackable, feel free to use in your own plugins
   patches.push(
-    instead("dispatch", Dispatcher.prototype, function ([event], orig) {
+    instead("dispatch", FluxDispatcher, function ([event], orig) {
       event = interceptEvent(event);
 
       if (event) {
         orig.apply(this, [event]);
       }
-    })
+    }),
   );
 
   patches.push(
-    instead(
-      "updateMessageRecord",
-      MessageRecord,
-      function ([oldRecord, newRecord], orig) {
-        if (newRecord.deleted) {
-          return MessageRecord.createMessageRecord(
-            newRecord,
-            oldRecord.reactions
-          );
-        }
-
-        return orig.apply(this, [oldRecord, newRecord]);
+    instead("updateMessageRecord", MessageRecord, function ([oldRecord, newRecord], orig) {
+      if (newRecord.deleted) {
+        return MessageRecord.createMessageRecord(newRecord, oldRecord.reactions);
       }
-    )
+
+      return orig.apply(this, [oldRecord, newRecord]);
+    }),
   );
 
   patches.push(
     after("createMessageRecord", MessageRecord, function ([message], record) {
       record.edits = message.edits;
       record.deleted = message.deleted;
-    })
+    }),
   );
 
   patches.push(
-    after(
-      "compare",
-      MessageContent,
-      function ([oldProps, newProps], shouldUpdate) {
-        return (
-          shouldUpdate &&
-          oldProps.message.edits === newProps.message.edits &&
-          oldProps.message.deleted === newProps.message.deleted
-        );
-      }
-    )
+    after("compare", MessageContent, function ([oldProps, newProps], shouldUpdate) {
+      return (
+        shouldUpdate &&
+        oldProps.message.edits === newProps.message.edits &&
+        oldProps.message.deleted === newProps.message.deleted
+      );
+    }),
   );
 
   const MessageProto = Message.default.prototype;
@@ -146,25 +132,15 @@ export function onLoad() {
       message.__proto__ = MessageProto;
 
       return message;
-    })
+    }),
   );
 
   patches.push(
-    after("type", MessageContent, function ([{message}], ret) {
+    after("type", MessageContent, function ([{ message }], ret) {
       const edits = (message.edits ?? []).map((edit) => (
-        <div
-          className={[
-            MarkupClasses.markup,
-            MessageClasses.messageContent,
-            "ml-edit",
-          ].join(" ")}
-        >
+        <div className={[MarkupClasses.markup, MessageClasses.messageContent, "ml-edit"].join(" ")}>
           {SimpleMarkdown.parse(edit.content)}{" "}
-          <MessageTimestamp
-            timestamp={edit.timestamp}
-            isEdited={true}
-            isInline={true}
-          >
+          <MessageTimestamp timestamp={edit.timestamp} isEdited={true} isInline={true}>
             <span className={MessageClasses.edited}>
               ({edit.original ? "original" : "past edit"})
             </span>
@@ -174,13 +150,11 @@ export function onLoad() {
 
       if (message.deleted) {
         ret.props.className += " ml-deleted";
-        ret.props.children.push(
-          <span className="ml-deleted-suffix"> (deleted)</span>
-        );
+        ret.props.children.push(<span className="ml-deleted-suffix"> (deleted)</span>);
       }
 
       return edits.length > 0 ? [...edits, ret] : ret;
-    })
+    }),
   );
 }
 
@@ -189,7 +163,7 @@ export function onUnload() {
     const messages = ChannelMessages._channelMessages[channelId]._array;
     for (const message of messages) {
       if (message.deleted) {
-        DispatcherImpl._dispatch({
+        FluxDispatcher.dispatch({
           type: "MESSAGE_DELETE",
           channelId: message.channel_id,
           id: message.id,
@@ -199,7 +173,7 @@ export function onUnload() {
       if (message.edits) {
         const data = message.toJS();
         delete data.edits;
-        DispatcherImpl._dispatch({
+        FluxDispatcher.dispatch({
           message: {
             ...data,
             id: message.id,
