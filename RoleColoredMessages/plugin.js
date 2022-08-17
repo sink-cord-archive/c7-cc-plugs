@@ -5,7 +5,7 @@ const MessageContent = find((x) => x?.type?.displayName === "MessageContent");
 
 const ChannelStore = findByProps("getChannel", "getDMUserIds");
 const MemberStore = findByProps("getMember");
-const UserSettingsStore = findByProps("MessageDisplayCompact");
+const ThemeStore = findByProps("_dispatcher", "theme");
 
 const tinycolor = findByProps("fromRatio");
 
@@ -21,9 +21,8 @@ export function onLoad() {
       : null;
     if (!member?.colorString) return;
 
-    const theme = UserSettingsStore.ThemeDoNotUseYet.getSetting();
     const initialColor = tinycolor(member.colorString);
-    const isDark = theme === "dark";
+    const isDark = ThemeStore.theme === "dark";
     const adjustedColor = isDark
       ? initialColor.brighten(30)
       : initialColor.darken(10);
