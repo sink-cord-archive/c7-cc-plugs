@@ -90,7 +90,9 @@ export function onLoad() {
       event = interceptEvent(event);
 
       if (event) {
-        orig.apply(this, [event]);
+        return orig.apply(this, [event]);
+      } else {
+        return new Promise();
       }
     }),
   );
