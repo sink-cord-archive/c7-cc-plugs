@@ -86,13 +86,11 @@ export function onLoad() {
 
   // stackable, feel free to use in your own plugins
   patches.push(
-    instead("dispatch", FluxDispatcher, function ([event], orig) {
+    instead("_dispatchWithDevtools", FluxDispatcher, function ([event], orig) {
       event = interceptEvent(event);
 
       if (event) {
-        return orig.apply(this, [event]);
-      } else {
-        return new Promise((r) => r());
+        orig.apply(this, [event]);
       }
     }),
   );
